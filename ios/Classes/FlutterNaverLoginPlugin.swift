@@ -264,11 +264,12 @@ public class FlutterNaverLoginPlugin: NSObject, FlutterPlugin,
         }
     }
 
-    private func getCurrentAccount() {
+ private func getCurrentAccount() {
         getUserInfo { result in
             switch result {
             case .success(let info):
                 print(info)
+                UserDefaults.standard.set("\(info["id"] ?? "ERROR_FAIL_TO_FETCH_ID")", forKey: "ios_naver_account_id")
                 DispatchQueue.main.async {
                     self.pendingResult?(info)
                     self.pendingResult = nil
@@ -285,6 +286,7 @@ public class FlutterNaverLoginPlugin: NSObject, FlutterPlugin,
             }
         }
     }
+
 
     private func getUserInfo(
         completion: @escaping (Result<[String: String], Error>) -> Void
